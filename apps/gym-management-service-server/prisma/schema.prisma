@@ -1,0 +1,38 @@
+datasource db {
+  provider = "mysql"
+  url      = env("DB_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Member {
+  id                  String           @id @default(cuid())
+  createdAt           DateTime         @default(now())
+  updatedAt           DateTime         @updatedAt
+  name                String?
+  email               String?
+  dateOfBirth         DateTime?
+  membershipStartDate DateTime?
+  membershipEndDate   DateTime?
+  foodPreferences     FoodPreference[]
+}
+
+model WorkoutPlan {
+  id            String   @id @default(cuid())
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  name          String?
+  durationWeeks Int?
+  description   String?
+}
+
+model FoodPreference {
+  id         String   @id @default(cuid())
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  preference String?
+  member     Member?  @relation(fields: [memberId], references: [id])
+  memberId   String?
+}
